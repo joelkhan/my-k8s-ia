@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubia-ing-webserver
+  namespace: my-bks-k8sia
+spec:
+  replicas: 2
+  # 部署2个由Deployment管理的pod
+  selector:
+    matchLabels:
+      app: kubia-ing-webserver
+  template:
+    metadata:
+      labels:
+        app: kubia-ing-webserver
+    spec:
+      containers:
+      - name: kubia-ing-webserver
+        image: k8fri.tianshdemo.org/library/kubia_ch02:v1
+        ports:
+        - name: http
+          containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubia-ing-webserver
+  namespace: my-bks-k8sia
+spec:
+  type: ClusterIP
+  selector:
+    app: kubia-ing-webserver
+  ports:
+  - name: http
+    port: 8180
+    protocol: TCP
+    targetPort: 8080
+

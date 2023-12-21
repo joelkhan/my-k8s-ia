@@ -1,0 +1,27 @@
+参考：
+https://blog.csdn.net/elihe2011/article/details/132232966
+
+1. 在命名空间【my-bks-k8sia】下，部署测试用的pod（由deploy管理）和svc，执行：
+mykc create -f ./01_pod_and_svc.yaml
+确认结果，执行：
+mykc get all
+其中，service/kubia-jsweb的EXTERNAL-IP列为“<pending>”
+
+2. ipvs 开启严格 arp模式
+kubectl edit configmap -n kube-system kube-proxy
+修改：
+ipvs:
+  strictARP: true
+
+3. 部署metallb（这会新建命名空间【metallb-system】）
+kubectl create -f ./02_metallb_native.yaml
+确认结果，执行：
+kubectl get pod -n metallb-system
+
+4. 在命名空间【metallb-system】下， 配置layer2的IP池
+kubectl create -f ./03_layer2.yaml
+确认结果，执行：
+mykc get all
+EXTERNAL-IP列应该显示了一个从IP池中分配的IP，我这里是192.168.3.236
+再执行：
+sudo ipvsadm -Ln | grep 192.168.3.236 -A 3   # 请替换你实际的IP

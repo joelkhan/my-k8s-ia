@@ -1,0 +1,40 @@
+0. 参考：https://www.cnblogs.com/wangguishe/p/17434752.html
+
+1. 部署ingress-controller（Ingress-Nginx版本为1.8.0），其中修改了：
+（1）controller-svc的类型为nodeport
+（2）指定了80和443的nodeport端口
+（3）指定deploy的replica=2（这个数量和节点数一致）
+部署，执行（这将创建命名空间【ingress-nginx】）：
+kubectl create -f ./01_ingress180.yaml
+确认结果：
+     # 查看ing-controller的pod，应该有2个，每个worker上有1个
+（1）kubectl get pod -n ingress-nginx -o wide 
+     # 查看ing-controller-svc，确认类型和端口与定义的一致
+（2）kubectl get svc -n ingress-nginx
+     # 访问测试，使用nodeIP和nodeport测试，最好每个node都测试下
+（3）curl 192.168.3.207:30080 -I 
+
+2. 在ns【my-bks-k8sia】下，部署测试用的pod（由deploy管理）和svc（ClusterIP类型），执行：
+mykc create -f ./02_pod_and_svc_for_ing180.yaml
+确认结果：
+mykc get all
+访问服务：
+curl `kubectl get svc/kubia-ing-webserver -n my-bks-k8sia -o jsonpath="{.spec.clusterIP}"`:8180
+
+3. 在ns【my-bks-k8sia】下，部署ingress-service（可简写为：ing-svc）
+   确保引用的“serviceName”和“servicePort”正确无误，执行：
+mykc create -f ./03_kubia_ing_svc_for_ing180.yaml
+确认结果：
+mykc get ing    # 查看ing-svc的基本信息
+这个命令的“ADDRESS”列会分配到一个集群IP，如“10.233.61.38”
+mykc describe ing kubia-ingress    # 查看ing-svc的详细信息
+
+4. 将第3步的“ADDRESS”IP和域名配置到hosts文件中
+如：
+10.233.61.38 kubia-ingress.example.com
+然后，测试执行：
+curl kubia-ingress.example.com
+
+5. 也可以这样测试下：
+curl -H "host: kubia-ingress.example.com" 192.168.3.207:`kubectl get svc/ingress-nginx-controller -n ingress-nginx -o jsonpath="{.spec.ports[?(@.port==80)].nodePort}"`
+

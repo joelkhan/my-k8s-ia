@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubia-jsweb
+  namespace: my-bks-k8sia
+spec:
+  replicas: 3
+  # 部署3个由Deployment管理的pod
+  selector:
+    matchLabels:
+      app: kubia-jsweb
+  template:
+    metadata:
+      labels:
+        app: kubia-jsweb
+    spec:
+      containers:
+      - name: kubia-jsweb
+        image: k8fri.tianshdemo.org/library/kubia_ch02:v1
+        ports:
+        - name: http
+          containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+# 部署一个LoadBalancer的服务
+metadata:
+  name: kubia-jsweb
+  namespace: my-bks-k8sia
+spec:
+  type: LoadBalancer
+  selector:
+    app: kubia-jsweb
+  ports:
+  - name: http
+    port: 8181
+    protocol: TCP
+    targetPort: 8080
+
