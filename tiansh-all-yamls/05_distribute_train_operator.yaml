@@ -21,7 +21,7 @@ spec:
         kubernetes.io/hostname: k8wor02
       containers:
       - name: distribute-train-operator
-        image: k8fri.cluster.local/distribute-train/distribute-train-operator:v1
+        image: k8fri.tianshdemo.org/distribute-train/distribute-train-operator:v1
         ports:
         - containerPort: 8080
           protocol: TCP
@@ -34,11 +34,12 @@ spec:
           #<redis-password> 是redis的密码没有的话把这项参数去掉
           #<redis-port> 是redis的端口 默认6379
           value: "distribute-train-operator-1.0.jar --k8s.kubeconfig=/root/config --spring.redis.host=192.168.3.196 --spring.redis.port=46379"
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
       volumes:
         - name: config-volume
           hostPath:
             #将Kubernetes集群 master节点的 $HOME/.kube/config 文件复制到 <your-k8s-host-name>节点（即“k8wor02”）的 /root/.kube/ 目录下
+            # 注意，config文件中的域名可能需要修改为master的IP
             path: /root/.kube/
             type: 
       restartPolicy: Always

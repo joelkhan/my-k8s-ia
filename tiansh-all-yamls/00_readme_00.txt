@@ -57,16 +57,27 @@
 （1）安装kubesphere集群，跳过
 （2）在主节点部署k8s相关组件
     （A）01_ingress.yaml
-	检查结果：
-	kubectl get pod  -n ingress-nginx
-    kubectl get svc  -n ingress-nginx
+		检查结果：
+		kubectl get pod -n ingress-nginx
+		kubectl get svc -n ingress-nginx
     （B）02_EFK.yaml
+		检查结果，查看pod：
+		kubectl get pod -n kube-system -o wide
+		查看svc：
+		kubectl get svc -n kube-system
+		查看kibana的端口：
+		kubectl get svc -A| grep kibana| awk '{print $6}'|awk -F ':|/' '{print $2}'
+		访问kibana的web服务，完成配置：
+		http://{masterip}:{上面返回的端口}/app/kibana#/dev_tools/console?_g=()
     （C）03_metrics_server.yaml
+		检查结果：
+		kubectl top node --use-protocol-buffers
     （D）04_monitor.yaml
-	检查结果：
-	kubectl get pods,svc -o wide -n tiansh-monitoring
+		检查结果：
+		kubectl get pods,svc -o wide -n tiansh-monitoring
 	（E）05_distribute_train_operator.yaml
-	这部分的readme，参见同目录下的“00_readme_01_operator.txt”
+		这部分的readme，参见同目录下的“00_readme_01_operator.txt”
+		kubectl get pod -n kube-system | grep distribute-train-operator
 （3）部署GPU相关服务（没有GPU可忽略）
 
 
