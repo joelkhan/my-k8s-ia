@@ -84,6 +84,37 @@
 /* *****
  *  03. 部署天枢服务
  * ***** */
+（0）可能需要重新安装dubhe下的所有服务，在删除命名空间dubhe-system时，可能会卡住，
+	 参考：00_readme_03_del_terminating_ns_howto.txt
+（1）前置工作，先拉取所有的镜像，参看本目录下的“00_readme_02_pull_all.txt”
+	 因需要下载的镜像数目多，有些镜像的体积大，最好这里做一次快照。
+（2）拉取部署源码
+	 本地源码的位置：/home/tiansh/my-tiansh-svc
+	 执行：
+	 git clone https://gitee.com/zhijiangtianshu/dubhe-deploy.git
+（3）提前准备好5个PV，参见：
+     06_dubhe_pv_all.yaml
+
+（4）编辑配置文件：
+	 cd dubhe-deploy/ && vi configmap.yaml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* *****

@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: dubhe-pv-dubhe-storage
+  # pv是集群级别的资源，不属于任何ns
+  labels:
+    cluster: k8s-for-dubhe-pv
+spec:
+  capacity: 
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: nfs
+  nfs: # nfs服务器
+    path: /opt/nfs-dirs/dubhe-pv-dubhe-storage
+    # 挂载位置
+    server: 192.168.3.196
+    #服务器地址
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: dubhe-pv-mysql
+  # pv是集群级别的资源，不属于任何ns
+  labels:
+    cluster: k8s-for-dubhe-pv
+spec:
+  capacity: 
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: nfs
+  nfs: # nfs服务器
+    path: /opt/nfs-dirs/dubhe-pv-mysql
+    # 挂载位置
+    server: 192.168.3.196
+    #服务器地址
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: dubhe-pv-nacos
+  # pv是集群级别的资源，不属于任何ns
+  labels:
+    cluster: k8s-for-dubhe-pv
+spec:
+  capacity: 
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: nfs
+  nfs: # nfs服务器
+    path: /opt/nfs-dirs/dubhe-pv-nacos
+    # 挂载位置
+    server: 192.168.3.196
+    #服务器地址
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: dubhe-pv-redis
+  # pv是集群级别的资源，不属于任何ns
+  labels:
+    cluster: k8s-for-dubhe-pv
+spec:
+  capacity: 
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: nfs
+  nfs: # nfs服务器
+    path: /opt/nfs-dirs/dubhe-pv-redis
+    # 挂载位置
+    server: 192.168.3.196
+    #服务器地址
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: dubhe-pv-dcm4chee
+  # pv是集群级别的资源，不属于任何ns
+  labels:
+    cluster: k8s-for-dubhe-pv
+spec:
+  capacity: 
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: nfs
+  nfs: # nfs服务器
+    path: /opt/nfs-dirs/dubhe-pv-dcm4chee
+    # 挂载位置
+    server: 192.168.3.196
+    #服务器地址
+---
+

@@ -1,0 +1,23 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: dubhe-system
+  # 先创建了命名空间：dubhe-system
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dubhe-pvc-nfs
+  namespace: dubhe-system
+spec:
+  storageClassName: nfs
+  resources:
+    requests:
+      storage: 500Gi
+  accessModes:
+    - ReadWriteMany
+  selector:
+    matchLabels:
+      cluster: k8s4dubhe
+
+
